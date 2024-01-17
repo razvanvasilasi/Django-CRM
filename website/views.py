@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm
 from . import models
-from django.views.generic import DetailView
+from django.views.generic import DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.urls import reverse_lazy
+from django import forms
 # Create your views here.
 def home(request):
     records = models.Record.objects.all()
@@ -34,9 +35,6 @@ def logout_user(request):
     logout(request)
     messages.success(request, "You have been Logged Out")
     return redirect('home')
-
-def simple_view(request):
-    return render(request, 'website/simple_view.html')
 
 def register_user(request):
     if request.method == "POST":
@@ -68,3 +66,18 @@ def delete_record(request, pk):
     else:
         messages.success(request, "You must be logged in to do that operation")
         return redirect('home')
+    
+# def add_record(request):
+#     return render(request, 'website/add_record.html', {})
+    
+class AddRecord(CreateView, LoginRequiredMixin):
+    model = models.Record
+    fields = '__all__'
+    template_name = 'website/add_record.html'
+    success_url = reverse_lazy('home')
+
+class UpdateRecord(UpdateView, LoginRequiredMixin):
+    model = models.Record
+    fields = "__all__"
+    template_name = "website/update_record.html"
+    success_url = reverse_lazy('home')

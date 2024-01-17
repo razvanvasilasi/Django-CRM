@@ -15,6 +15,7 @@
               <th scope="col">State</th>
               <th scope="col">Zipcode</th>
               <th scope="col">Created at</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -30,6 +31,9 @@
             <td>{{record.state}}</td>
             <td>{{record.zipcode}}</td>
             <td>{{record.created_at}}</td>
+            <td><a href="{% url 'delete_record' record.id %}"><span class="material-icons">
+              delete
+              </span></a></td>
           </tr>
           {% endfor %}
         {% endif %}
